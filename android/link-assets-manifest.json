@@ -1,0 +1,37 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Quicksand/OFL.txt",
+      "sha1": "060d73cf12d28ecea238954c94c77e908c4d2345"
+    },
+    {
+      "path": "assets/fonts/Quicksand/Quicksand-VariableFont_wght.ttf",
+      "sha1": "71c193f7835f2d7bcce8d6d4c9d605696d76b14a"
+    },
+    {
+      "path": "assets/fonts/Quicksand/README.txt",
+      "sha1": "272803e2f923ddb7ad88993876e3c67e9c67529b"
+    },
+    {
+      "path": "assets/fonts/Quicksand/static/Quicksand-Bold.ttf",
+      "sha1": "8727a6ae26c6646a7f25bfe6560e19c9265ea87c"
+    },
+    {
+      "path": "assets/fonts/Quicksand/static/Quicksand-Light.ttf",
+      "sha1": "739d87992cf1cd96cff0c9c32e40927385a38146"
+    },
+    {
+      "path": "assets/fonts/Quicksand/static/Quicksand-Medium.ttf",
+      "sha1": "48d202c7a215914264064dc27f6a8cd77ebe3036"
+    },
+    {
+      "path": "assets/fonts/Quicksand/static/Quicksand-Regular.ttf",
+      "sha1": "6eebfcb02f142c6e2bf58f7fcb31f10ec914a0ed"
+    },
+    {
+      "path": "assets/fonts/Quicksand/static/Quicksand-SemiBold.ttf",
+      "sha1": "43fdbf795bb0b7cc5b0d3dbcbdef0cdec0f29ca9"
+    }
+  ]
+}
