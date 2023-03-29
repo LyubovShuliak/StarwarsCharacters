@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
   Dimensions,
@@ -9,15 +9,26 @@ import {
   View,
 } from 'react-native';
 import {useAppDispatch, useAppSelector} from '../redux/store';
-import {clearState, fansByCategory} from '../redux/characters/characters.slice';
+import {
+  clearState,
+  fansByCategory,
+  favs,
+} from '../redux/characters/characters.slice';
 import {COLORS, TYPOGRAPHY} from '../theme';
+import {saveFavoritesToAsyncStorage} from '../redux/characters/characters.thunk';
 
 const Favorites = () => {
   const dispatch = useAppDispatch();
   const fans = useAppSelector(fansByCategory);
+  const fansArray = useAppSelector(favs);
   const reset = () => {
     dispatch(clearState());
   };
+
+  useEffect(() => {
+    dispatch(saveFavoritesToAsyncStorage({fans, favsUriList: fansArray}));
+  }, [fans, fansArray]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>

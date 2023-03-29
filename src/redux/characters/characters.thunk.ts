@@ -1,6 +1,7 @@
 import {createAsyncThunk, nanoid} from '@reduxjs/toolkit';
-import {Character, GENDER} from '../types';
-import {BASE_URL} from '../../constants';
+import {Character, Fans, GENDER} from '../types';
+import {BASE_URL, FAVS_ASYNC_STORAGE_KEY} from '../../constants';
+import {getAsyncStorageData, storeData} from './asyncStorageApi';
 
 const mapCharacters = (data: Character[]) => {
   return data.map((character: Character) => ({
@@ -41,3 +42,34 @@ export const searchPeople = createAsyncThunk<{people: Character[]}, string>(
     }
   },
 );
+
+export const saveFavoritesToAsyncStorage = createAsyncThunk<
+  {status: boolean},
+  {fans: Fans; favsUriList: string[]}
+>('favorites/save', async props => {
+  try {
+    await storeData({props, key: FAVS_ASYNC_STORAGE_KEY});
+
+    return {status: true};
+  } catch (error) {
+    return {status: false};
+  }
+});
+
+export const getFavoritesFromAsyncStorage = createAsyncThunk<
+  {status: boolean; data?: {fans: Fans; favsUriList: string[]}},
+  string
+>('favorites/save', async key => {
+  try {
+    const data: {fans: Fans; favsUriList: string[]} = await getAsyncStorageData(
+      key,
+    );
+    if (!data) {
+      return {status: false};
+    } else {
+      return {status: true, data};
+    }
+  } catch (error) {
+    return {status: false};
+  }
+});

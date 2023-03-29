@@ -1,10 +1,8 @@
 import React, {Dispatch, FC, useCallback, useRef, useState} from 'react';
-
 import {
   Dimensions,
   FlatList,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
   ViewToken,
@@ -19,7 +17,6 @@ import {
 import {useAppDispatch, useAppSelector} from '../redux/store';
 import {getPeople} from '../redux/characters/characters.thunk';
 import Loader from './ActivityIndicator.component';
-
 import Arrow from '../assets/icons/BackArrow.svg';
 
 const CharactersList: FC<{
@@ -86,7 +83,6 @@ const CharactersList: FC<{
         ListFooterComponent={() => {
           return (
             <>
-              {load ? <Loader /> : null}
               {toTheTopButtonVisible ? (
                 <TouchableOpacity
                   style={styles.toTheTopArrow}
@@ -98,13 +94,12 @@ const CharactersList: FC<{
                   />
                 </TouchableOpacity>
               ) : null}
+              {load ? <Loader /> : null}
             </>
           );
         }}
         contentContainerStyle={{paddingBottom: 100}}
         initialNumToRender={10}
-        // scrollEnabled={true}
-        // onScroll={onScroll}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
     </View>

@@ -10,23 +10,29 @@ import {
   setLoading,
   stopSearch,
 } from '../redux/characters/characters.slice';
-import {getPeople, searchPeople} from '../redux/characters/characters.thunk';
+import { getPeople, saveFavoritesToAsyncStorage, searchPeople } from "../redux/characters/characters.thunk";
 import SearchInput from '../components/SearchInput.component';
 import Loader from '../components/ActivityIndicator.component';
 import {Character} from '../redux/types';
 import CharactersList from '../components/CharacterList';
 import debounce from 'lodash.debounce';
 import Favorites from '../components/Favorites';
+import { getAsyncStorageData } from "../redux/characters/asyncStorageApi";
 
 const Home = () => {
   const dispatch = useAppDispatch();
+
   const charactersList = useAppSelector(people);
   const charactersSearchedList = useAppSelector(searchedPeople);
   const isLoading = useAppSelector(loading);
+
   const [charactersToDisplay, setCharactersToDisplay] = useState<Character[]>(
     [],
   );
   const [text, onChangeText] = useState('');
+  const filterCharacters = debounce(() => {
+    dispatch(searchPeople(text));
+  }, 10);
 
   useEffect(() => {
     if (!charactersList.length) {
@@ -40,14 +46,9 @@ const Home = () => {
     }
   }, [isLoading]);
 
-  const filterCharacters = debounce(() => {
-    dispatch(searchPeople(text));
-  }, 10);
-
   useEffect(() => {
     if (text.length > 0) {
       dispatch(setLoading());
-
       filterCharacters();
     } else {
       dispatch(stopSearch());

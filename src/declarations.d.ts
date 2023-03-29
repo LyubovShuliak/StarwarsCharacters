@@ -5,8 +5,4 @@ declare module '*.svg' {
   const content: React.FC<SvgProps>;
   export default content;
 }
-interface ImageCarouselItem {
-  id: number;
-  uri?: string;
-  title?: string;
-}
+

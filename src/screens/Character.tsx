@@ -1,31 +1,14 @@
 import React, {FC} from 'react';
-
-import {
-  Dimensions,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../types';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {StackScreenProps} from '@react-navigation/stack';
 import BackIcon from '../components/icons/BackIcon.component';
 import {COLORS, TYPOGRAPHY} from '../theme';
-import {useAppDispatch} from '../redux/store';
 import AddToFavorites from '../components/AddToFavoritesButton';
 type CharacterScreenProps = StackScreenProps<RootStackParamList, 'Character'>;
 const Character: FC<CharacterScreenProps> = ({route}) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  const onPress = () => {
-    navigation.navigate('Home');
-  };
-  const dispatch = useAppDispatch();
   const {
-    data: {name, id, gender, height, birth_year},
+    data: {name, gender, height, birth_year},
   } = route.params;
 
   return (

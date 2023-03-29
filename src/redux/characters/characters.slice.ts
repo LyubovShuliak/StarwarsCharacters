@@ -1,5 +1,9 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {getPeople, searchPeople} from './characters.thunk';
+import {
+  getFavoritesFromAsyncStorage,
+  getPeople,
+  searchPeople,
+} from './characters.thunk';
 import {Character, GENDER, InitialState} from '../types';
 
 import {RootState} from '../store';
@@ -16,8 +20,8 @@ const initialState: InitialState = {
   status: true,
   loading: false,
   favsUriList: [],
-  lastPage: 0,
   search: false,
+  favoritesUploadedFromStorage: false,
 };
 
 export const characterSlice = createSlice({
@@ -88,6 +92,22 @@ export const characterSlice = createSlice({
       state.loading = false;
       state.status = false;
     });
+    builder.addCase(getFavoritesFromAsyncStorage.fulfilled, (state, action) => {
+      if (action.payload.data) {
+        state.fans = action.payload.data.fans;
+        state.favsUriList = action.payload.data.favsUriList;
+      }
+      state.favoritesUploadedFromStorage = true;
+    });
+    builder.addCase(getFavoritesFromAsyncStorage.pending, state => {
+      state.favoritesUploadedFromStorage = false;
+      state.search = true;
+    });
+
+    builder.addCase(getFavoritesFromAsyncStorage.rejected, state => {
+      state.favoritesUploadedFromStorage = true;
+      state.status = false;
+    });
   },
 });
 
@@ -102,4 +122,5 @@ export const nextLink = (state: RootState) => state.characters.nextPage;
 export const fansByCategory = (state: RootState) => state.characters.fans;
 export const favs = (state: RootState) => state.characters.favsUriList;
 export const isSearching = (state: RootState) => state.characters.search;
+export const favsUploaded = (state: RootState) => state.characters.favoritesUploadedFromStorage;
 export const charactersReducer = characterSlice.reducer;

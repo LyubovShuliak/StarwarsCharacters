@@ -37,6 +37,7 @@ export type InitialState = {
   loading: boolean;
 
   favsUriList: string[];
-  lastPage: number,
-  search: boolean
+
+  search: boolean;
+  favoritesUploadedFromStorage: boolean
 };
