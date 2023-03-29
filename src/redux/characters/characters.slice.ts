@@ -101,7 +101,6 @@ export const characterSlice = createSlice({
     });
     builder.addCase(getFavoritesFromAsyncStorage.pending, state => {
       state.favoritesUploadedFromStorage = false;
-      state.search = true;
     });
 
     builder.addCase(getFavoritesFromAsyncStorage.rejected, state => {
