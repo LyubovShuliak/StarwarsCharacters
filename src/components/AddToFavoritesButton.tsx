@@ -4,10 +4,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import Heart from '../assets/icons/Heart.svg';
 import WhiteHeart from '../assets/icons/WhiteHeart.svg';
 import {
-  addToFavs,
+  addToFavorites,
   favoritesArray,
   favsUploaded,
-  removeFromFavs,
+  removeFromFavorites,
 } from '../redux/characters/characters.slice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { Character, GENDER } from '../redux/types';
@@ -21,14 +21,17 @@ const AddToFavorites: FC<{ character: Character }> = ({ character }) => {
   const handleFavorite = () => {
     if (favoritesUriList.includes(character.url)) {
       dispatch(
-        removeFromFavs({
+        removeFromFavorites({
           uri: character.url,
           gender: character.gender as GENDER,
         })
       );
     } else {
       dispatch(
-        addToFavs({ uri: character.url, gender: character.gender as GENDER })
+        addToFavorites({
+          uri: character.url,
+          gender: character.gender as GENDER,
+        })
       );
     }
   };
