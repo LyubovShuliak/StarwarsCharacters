@@ -1,3 +1,24 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "include": [
+    ".eslintrc.js",
+    "*.config.js",
+    "*.ts", "*.tsx" ,
+    "./src/declarations.d.ts",
+    "./node_modules/@types",
+    "./node_modules/lodash/index.js",
+    "*.jsx",
+    "./__tests__/App-test.tsx",
+    "*.js"
+  ],
+  "compilerOptions": {
+    "jsx": "react",
+    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+
+    /* Completeness */
+    "skipLibCheck": true,
+    "module": "commonjs" ,
+    "baseUrl": "."
+
+  }
 }

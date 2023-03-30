@@ -1,49 +1,76 @@
-import React, {Dispatch, FC, useCallback, useRef, useState} from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import {
   Dimensions,
   FlatList,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
   ViewToken,
 } from 'react-native';
-import {Character} from '../redux/types';
-import CharacterItem from './CharacterListItem';
-import {
-  isSearching,
-  loading,
-  nextLink,
-} from '../redux/characters/characters.slice';
-import {useAppDispatch, useAppSelector} from '../redux/store';
-import {getPeople} from '../redux/characters/characters.thunk';
-import Loader from './ActivityIndicator.component';
-import Arrow from '../assets/icons/BackArrow.svg';
 
+import Arrow from '../assets/icons/BackArrow.svg';
+import { loading, nextLink } from '../redux/characters/characters.slice';
+import { getPeople } from '../redux/characters/characters.thunk';
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import { Character } from '../redux/types';
+import { COLORS, TYPOGRAPHY } from '../theme';
+import Loader from './ActivityIndicator.component';
+import CharacterItem from './CharacterListItem';
+
+const ListFooterComponent: FC<{
+  toTheTopButtonVisible: boolean;
+  scrollToTop: () => void;
+  load: boolean;
+  nextPage: string;
+  searchText: string;
+}> = ({ toTheTopButtonVisible, scrollToTop, load, searchText, nextPage }) => {
+  return (
+    <>
+      {toTheTopButtonVisible && !searchText ? (
+        <TouchableOpacity style={styles.toTheTopArrow} onPress={scrollToTop}>
+          <Arrow
+            height={20}
+            width={20}
+            style={{
+              transform: [{ rotate: '90deg' }, { translateX: 2 }],
+            }}
+          />
+        </TouchableOpacity>
+      ) : null}
+      {load ? <Loader /> : null}
+
+      {!nextPage && !searchText && !load ? (
+        <Text style={styles.lastPageNotify}>No more characters</Text>
+      ) : null}
+    </>
+  );
+};
 const CharactersList: FC<{
   data: Character[];
-  clearSearch: Dispatch<string>;
-}> = ({data, clearSearch}) => {
+  clearSearch: () => void;
+  searchText: string;
+}> = ({ data, clearSearch, searchText }) => {
   const dispatch = useAppDispatch();
 
   const nextPage = useAppSelector(nextLink);
   const load = useAppSelector(loading);
-  const search = useAppSelector(isSearching);
 
   const listRef = useRef<FlatList<Character>>(null);
 
   const [toTheTopButtonVisible, setToTheTopButtonVisible] = useState(false);
   const loadMore = () => {
-    if (!search && nextPage) {
+    if (!searchText && nextPage) {
       dispatch(getPeople(nextPage));
     }
   };
 
   const onViewableItemsChanged = useCallback(
-    (info: {viewableItems: ViewToken[]; changed: ViewToken[]}) => {
+    (info: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
       if (!info) {
         return;
       }
-      const {viewableItems} = info;
+      const { viewableItems } = info;
       if (
         viewableItems &&
         viewableItems[0]?.index &&
@@ -52,53 +79,45 @@ const CharactersList: FC<{
         setToTheTopButtonVisible(true);
       }
     },
-    [],
+    []
   );
   const viewabilityConfig = {
     itemVisiblePercentThreshold: 50,
   };
   const viewabilityConfigCallbackPairs = useRef([
-    {viewabilityConfig, onViewableItemsChanged},
+    { viewabilityConfig, onViewableItemsChanged },
   ]);
 
   const scrollToTop = () => {
-    listRef.current?.scrollToIndex({index: 0, animated: true});
+    listRef.current?.scrollToIndex({ index: 0, animated: true });
   };
+
   return (
     <View
       style={{
-        position: 'relative',
         height: Dimensions.get('screen').height * 0.8,
-      }}>
+      }}
+    >
       <FlatList
         ref={listRef}
         data={data}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <CharacterItem character={item} clearSearch={clearSearch} />
         )}
         onEndReached={loadMore}
         scrollEventThrottle={250}
-        onEndReachedThreshold={0.01}
+        onEndReachedThreshold={0.1}
         keyExtractor={item => item.id}
-        ListFooterComponent={() => {
-          return (
-            <>
-              {toTheTopButtonVisible ? (
-                <TouchableOpacity
-                  style={styles.toTheTopArrow}
-                  onPress={scrollToTop}>
-                  <Arrow
-                    height={20}
-                    width={20}
-                    style={{transform: [{rotate: '90deg'}, {translateX: 2}]}}
-                  />
-                </TouchableOpacity>
-              ) : null}
-              {load ? <Loader /> : null}
-            </>
-          );
-        }}
-        contentContainerStyle={{paddingBottom: 100}}
+        ListFooterComponent={
+          <ListFooterComponent
+            toTheTopButtonVisible={toTheTopButtonVisible}
+            scrollToTop={scrollToTop}
+            load={load}
+            nextPage={nextPage}
+            searchText={searchText}
+          />
+        }
+        contentContainerStyle={styles.flatlist}
         initialNumToRender={10}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
@@ -108,11 +127,17 @@ const CharactersList: FC<{
 const styles = StyleSheet.create({
   toTheTopArrow: {
     height: 40,
-
     zIndex: 100,
     alignSelf: 'center',
     padding: 10,
     borderRadius: 30,
   },
+  lastPageNotify: {
+    color: COLORS.BLACK,
+    fontFamily: TYPOGRAPHY.FONTS.semibold,
+    textAlign: 'center',
+    width: Dimensions.get('screen').width,
+  },
+  flatlist: { paddingBottom: 100 },
 });
 export default CharactersList;

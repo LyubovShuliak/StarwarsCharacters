@@ -1,4 +1,4 @@
-import React, {Dispatch, FC} from 'react';
+import React, { Dispatch, FC } from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -6,15 +6,15 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {TYPOGRAPHY, COLORS} from '../theme';
 
+import { COLORS, TYPOGRAPHY } from '../theme';
 import SearchIcon from './icons/SearchIcon.component';
 
 type Props = {
   text: string;
   onChangeText: Dispatch<React.SetStateAction<string>>;
 };
-const SearchInput: FC<Props> = ({onChangeText, text}) => {
+const SearchInput: FC<Props> = ({ onChangeText, text }) => {
   return (
     <SafeAreaView style={[styles.header]}>
       <View style={[styles.inputContainer]}>
@@ -23,6 +23,7 @@ const SearchInput: FC<Props> = ({onChangeText, text}) => {
           onChangeText={onChangeText}
           value={text}
           placeholder={'Search'}
+          placeholderTextColor={COLORS.GREY}
         />
         <SearchIcon />
       </View>

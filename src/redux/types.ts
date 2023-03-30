@@ -22,11 +22,10 @@ export enum GENDER {
   FEMALE = 'female',
   OTHER = 'other',
 }
-export type Favorite = {title: string; number: number};
+export type Favorite = { title: string; number: number };
 export type Fans = {
   [key in GENDER]: Favorite;
 };
-
 
 export type InitialState = {
   nextPage: string;
@@ -36,8 +35,7 @@ export type InitialState = {
   fans: Fans;
   loading: boolean;
 
-  favsUriList: string[];
+  favoritesUriList: string[];
 
-  search: boolean;
-  favoritesUploadedFromStorage: boolean
+  favoritesUploadedFromStorage: boolean;
 };

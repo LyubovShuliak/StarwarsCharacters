@@ -1,41 +1,34 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
 import Heart from '../assets/icons/Heart.svg';
 import WhiteHeart from '../assets/icons/WhiteHeart.svg';
-
 import {
   addToFavs,
-  favs,
+  favoritesArray,
   favsUploaded,
   removeFromFavs,
 } from '../redux/characters/characters.slice';
-import {Character, GENDER} from '../redux/types';
-import {useAppDispatch, useAppSelector} from '../redux/store';
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import { Character, GENDER } from '../redux/types';
 
-const AddToFavorites: FC<{character: Character}> = ({character}) => {
+const AddToFavorites: FC<{ character: Character }> = ({ character }) => {
   const dispatch = useAppDispatch();
-  const fans = useAppSelector(favs);
+  const favoritesUriList = useAppSelector(favoritesArray);
 
   const favoritesUploaded = useAppSelector(favsUploaded);
 
   const handleFavorite = () => {
-    if (fans.includes(character.url)) {
+    if (favoritesUriList.includes(character.url)) {
       dispatch(
         removeFromFavs({
           uri: character.url,
           gender: character.gender as GENDER,
-        }),
+        })
       );
     } else {
       dispatch(
-        addToFavs({uri: character.url, gender: character.gender as GENDER}),
+        addToFavs({ uri: character.url, gender: character.gender as GENDER })
       );
     }
   };
@@ -43,7 +36,7 @@ const AddToFavorites: FC<{character: Character}> = ({character}) => {
     <>
       {favoritesUploaded ? (
         <TouchableOpacity onPress={handleFavorite} style={styles.button}>
-          {fans.includes(character.url) ? (
+          {favoritesUriList.includes(character.url) ? (
             <Heart width={30} height={30} />
           ) : (
             <WhiteHeart width={30} height={30} />

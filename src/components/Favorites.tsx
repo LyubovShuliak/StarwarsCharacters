@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-
+import React, { useEffect } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -8,25 +7,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useAppDispatch, useAppSelector} from '../redux/store';
+
 import {
   clearState,
   fansByCategory,
-  favs,
+  favoritesArray,
 } from '../redux/characters/characters.slice';
-import {COLORS, TYPOGRAPHY} from '../theme';
-import {saveFavoritesToAsyncStorage} from '../redux/characters/characters.thunk';
+import { saveFavoritesToAsyncStorage } from '../redux/characters/characters.thunk';
+import { useAppDispatch, useAppSelector } from '../redux/store';
+import { COLORS, TYPOGRAPHY } from '../theme';
 
 const Favorites = () => {
   const dispatch = useAppDispatch();
   const fans = useAppSelector(fansByCategory);
-  const fansArray = useAppSelector(favs);
+  const fansArray = useAppSelector(favoritesArray);
   const reset = () => {
     dispatch(clearState());
   };
 
   useEffect(() => {
-    dispatch(saveFavoritesToAsyncStorage({fans, favsUriList: fansArray}));
+    dispatch(
+      saveFavoritesToAsyncStorage({ fans, favoritesUriList: fansArray })
+    );
   }, [fans, fansArray]);
 
   return (
@@ -39,7 +41,7 @@ const Favorites = () => {
       </View>
       <FlatList
         data={Object.entries(fans)}
-        renderItem={({item}) => (
+        renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.item}>
               {item[1].title} {item[1].number}
@@ -58,11 +60,11 @@ const styles = StyleSheet.create({
   item: {
     display: 'flex',
     backgroundColor: COLORS.LIGHT_GREY,
-
     padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
     alignContent: 'center',
+    color: COLORS.BLACK,
   },
   container: {
     flexDirection: 'column',
@@ -73,8 +75,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 10,
   },
-  header: {flexDirection: 'row', justifyContent: 'space-between'},
-  headerText: {fontFamily: TYPOGRAPHY.FONTS.bold, fontSize: 18, padding: 5},
+  header: { flexDirection: 'row', justifyContent: 'space-between' },
+  headerText: {
+    color: COLORS.BLACK,
+    fontFamily: TYPOGRAPHY.FONTS.bold,
+    fontSize: 18,
+    padding: 5,
+  },
   resetButton: {
     borderStyle: 'solid',
     borderRadius: 10,

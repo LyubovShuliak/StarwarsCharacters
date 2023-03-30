@@ -2,10 +2,12 @@ import {
   NavigationContainer,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import {Provider} from 'react-redux';
-import {store} from './src/redux/store';
-import {Text} from 'react-native';
-import {HomeStack} from './src/stackNavigator';
+import React from 'react';
+import { Text } from 'react-native';
+import { Provider } from 'react-redux';
+
+import { store } from './src/redux/store';
+import { HomeStack } from './src/stackNavigator';
 
 const App = () => {
   const navigationRef = useNavigationContainerRef();
@@ -14,7 +16,8 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer
         ref={navigationRef}
-        fallback={<Text>Loading..</Text>}>
+        fallback={<Text>Loading..</Text>}
+      >
         <HomeStack />
       </NavigationContainer>
     </Provider>

@@ -8,11 +8,10 @@ export const COLORS = {
   RED: 'rgb(136, 8, 8)',
   YELLOW: '#d0a54b',
   TRANSPARENT: 'transparent',
-
 };
 
 export const TYPOGRAPHY = {
-  BORDER_RADIUS: {small: 5, average: 10, big: 20},
+  BORDER_RADIUS: { small: 5, average: 10, big: 20 },
   tabBarHeight: 50,
   FONTS: {
     bold: 'Quicksand-Bold',

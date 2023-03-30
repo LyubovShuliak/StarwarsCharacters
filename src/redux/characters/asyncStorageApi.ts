@@ -1,23 +1,29 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Fans} from '../types';
+
+import { Fans } from '../types';
+import { AsyncStorageData } from './characters.thunk';
 
 export const storeData: (props: {
-  props: {fans: Fans; favsUriList: string[]};
+  props: { fans: Fans; favoritesUriList: string[] };
   key: string;
-}) => void = async ({props, key}) => {
+}) => void = ({ props, key }) => {
   try {
     const strigified = JSON.stringify(props);
-    await AsyncStorage.setItem(key, strigified);
+    AsyncStorage.setItem(key, strigified);
   } catch (e) {
     // saving error
   }
 };
 
-export const getAsyncStorageData = async (key: string) => {
+export const getAsyncStorageData: (
+  key: string
+) => Promise<AsyncStorageData | null> = async (key: string) => {
   try {
     const jsonValue = await AsyncStorage.getItem(key);
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
+    return jsonValue != null
+      ? (JSON.parse(jsonValue) as AsyncStorageData)
+      : null;
   } catch (e) {
-    return {};
+    return null;
   }
 };

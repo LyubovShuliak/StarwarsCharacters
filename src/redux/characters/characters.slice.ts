@@ -1,26 +1,25 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { RootState } from '../store';
+import { Character, GENDER, InitialState } from '../types';
 import {
   getFavoritesFromAsyncStorage,
   getPeople,
   searchPeople,
 } from './characters.thunk';
-import {Character, GENDER, InitialState} from '../types';
-
-import {RootState} from '../store';
 
 const initialState: InitialState = {
   nextPage: '',
   characters: [],
   searchedCharacters: [],
   fans: {
-    [GENDER.MALE]: {number: 0, title: 'Male'},
-    [GENDER.FEMALE]: {number: 0, title: 'Female'},
-    [GENDER.OTHER]: {number: 0, title: 'Other'},
+    [GENDER.MALE]: { number: 0, title: 'Male' },
+    [GENDER.FEMALE]: { number: 0, title: 'Female' },
+    [GENDER.OTHER]: { number: 0, title: 'Other' },
   },
   status: true,
   loading: false,
-  favsUriList: [],
-  search: false,
+  favoritesUriList: [],
   favoritesUploadedFromStorage: false,
 };
 
@@ -31,35 +30,32 @@ export const characterSlice = createSlice({
     setLoading: state => {
       state.loading = true;
     },
-    addToFavs: (
+    addToFavorites: (
       state,
       action: PayloadAction<{
         uri: string;
         gender: GENDER;
-      }>,
+      }>
     ) => {
-      state.favsUriList.push(action.payload.uri);
+      state.favoritesUriList.push(action.payload.uri);
       state.fans[action.payload.gender].number++;
     },
-    removeFromFavs: (
+    removeFromFavorites: (
       state,
       action: PayloadAction<{
         uri: string;
         gender: GENDER;
-      }>,
+      }>
     ) => {
-      state.favsUriList = state.favsUriList.filter(
-        url => url !== action.payload.uri,
+      state.favoritesUriList = state.favoritesUriList.filter(
+        url => url !== action.payload.uri
       );
       state.fans[action.payload.gender].number--;
     },
 
-    stopSearch: state => {
-      state.search = false;
-    },
     clearState: state => {
       state.fans = initialState.fans;
-      state.favsUriList = initialState.favsUriList;
+      state.favoritesUriList = initialState.favoritesUriList;
     },
   },
   extraReducers: builder => {
@@ -85,7 +81,6 @@ export const characterSlice = createSlice({
 
     builder.addCase(searchPeople.pending, state => {
       state.loading = true;
-      state.search = true;
     });
 
     builder.addCase(searchPeople.rejected, state => {
@@ -95,7 +90,7 @@ export const characterSlice = createSlice({
     builder.addCase(getFavoritesFromAsyncStorage.fulfilled, (state, action) => {
       if (action.payload.data) {
         state.fans = action.payload.data.fans;
-        state.favsUriList = action.payload.data.favsUriList;
+        state.favoritesUriList = action.payload.data.favoritesUriList;
       }
       state.favoritesUploadedFromStorage = true;
     });
@@ -110,7 +105,7 @@ export const characterSlice = createSlice({
   },
 });
 
-export const {setLoading, addToFavs, removeFromFavs, stopSearch, clearState} =
+export const { setLoading, addToFavorites, removeFromFavorites, clearState } =
   characterSlice.actions;
 
 export const people = (state: RootState) => state.characters.characters;
@@ -119,7 +114,8 @@ export const searchedPeople = (state: RootState) =>
 export const loading = (state: RootState) => state.characters.loading;
 export const nextLink = (state: RootState) => state.characters.nextPage;
 export const fansByCategory = (state: RootState) => state.characters.fans;
-export const favs = (state: RootState) => state.characters.favsUriList;
-export const isSearching = (state: RootState) => state.characters.search;
-export const favsUploaded = (state: RootState) => state.characters.favoritesUploadedFromStorage;
+export const favoritesArray = (state: RootState) =>
+  state.characters.favoritesUriList;
+export const favsUploaded = (state: RootState) =>
+  state.characters.favoritesUploadedFromStorage;
 export const charactersReducer = characterSlice.reducer;

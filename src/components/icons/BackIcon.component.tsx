@@ -1,19 +1,19 @@
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, useColorScheme} from 'react-native';
-import Back from '../../assets/icons/BackArrow.svg';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-import {RootStackParamList} from '../../types';
-import {COLORS} from '../../theme';
+import Back from '../../assets/icons/BackArrow.svg';
+import { COLORS } from '../../theme';
+import { RootStackParamList } from '../../types';
 
 const BackIcon = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const theme = useColorScheme() === 'dark';
   return (
     <TouchableOpacity
       style={[styles.backButton]}
-      onPress={() => navigation.goBack()}>
+      onPress={() => navigation.goBack()}
+    >
       <Back height={15} width={15} />
       <Text style={styles.text}>Go back</Text>
     </TouchableOpacity>
@@ -24,11 +24,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     alignItems: 'center',
-    // // flexGrow: 1,
-    // justifyContent: 'center',
-    // paddingRight: 15,
     flexDirection: 'row',
-    // maxWidth: 20,
 
     padding: 20,
   },
