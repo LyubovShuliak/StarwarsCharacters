@@ -1,13 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { FC } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import Heart from '../assets/icons/Heart.svg';
 import WhiteHeart from '../assets/icons/WhiteHeart.svg';
@@ -17,7 +11,7 @@ import {
   removeFromFavorites,
 } from '../redux/characters/characters.slice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { Character, GENDER } from '../redux/types';
+import { Character } from '../redux/types';
 import { COLORS, TYPOGRAPHY } from '../theme';
 import { RootStackParamList } from '../types';
 const CharacterItem: FC<{
@@ -38,14 +32,14 @@ const CharacterItem: FC<{
       dispatch(
         removeFromFavorites({
           uri: character.url,
-          gender: character.gender as GENDER,
+          gender: character.gender,
         })
       );
     } else {
       dispatch(
         addToFavorites({
           uri: character.url,
-          gender: character.gender as GENDER,
+          gender: character.gender,
         })
       );
     }
@@ -78,13 +72,13 @@ const CharacterItem: FC<{
 const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: COLORS.YELLOW,
-    width: Dimensions.get('screen').width * 0.95,
-    marginHorizontal: Dimensions.get('screen').width * 0.025,
+    width: '95%',
+    marginHorizontal: '2.5%',
     marginVertical: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: '1%',
   },
 
   cardContainer: {

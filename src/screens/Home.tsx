@@ -31,8 +31,10 @@ const Home = () => {
   }, 500);
 
   useEffect(() => {
-    dispatch(getPeople());
-  }, []);
+    if (!charactersList.length) {
+      dispatch(getPeople());
+    }
+  }, [charactersList]);
 
   useEffect(() => {
     if (searchText.length > 0) {

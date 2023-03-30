@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import React, { FC } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import AddToFavorites from '../components/AddToFavoritesButton';
 import BackIcon from '../components/icons/BackIcon.component';
@@ -9,13 +9,13 @@ import { RootStackParamList } from '../types';
 type CharacterScreenProps = StackScreenProps<RootStackParamList, 'Character'>;
 const Character: FC<CharacterScreenProps> = ({ route }) => {
   const {
-    data: { name, gender, height, birth_year },
+    data: { name, gender, height, birth_year, eye_color },
   } = route.params;
 
   return (
-    <SafeAreaView
+    <ScrollView
       style={{
-        height: Dimensions.get('screen').height,
+        height: '100%',
         backgroundColor: COLORS.LIGHT_GREY,
       }}
     >
@@ -32,11 +32,15 @@ const Character: FC<CharacterScreenProps> = ({ route }) => {
         <Text style={[styles.characterData, styles.info]}>
           Year of birth: {birth_year}
         </Text>
+
         <Text style={[styles.characterData, styles.info]}>
           Height: {height}
         </Text>
+        <Text style={[styles.characterData, styles.info]}>
+          Eye color: {eye_color}
+        </Text>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -53,7 +57,6 @@ const styles = StyleSheet.create({
     borderColor: COLORS.BLOCK_GREY,
     textTransform: 'capitalize',
     marginVertical: 10,
-
     color: COLORS.BLOCK_GREY,
   },
   characterCategory: {

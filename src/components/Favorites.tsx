@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import {
-  Dimensions,
   FlatList,
   StyleSheet,
   Text,
@@ -71,7 +70,7 @@ const styles = StyleSheet.create({
   },
   flatlistContainer: {
     justifyContent: 'space-between',
-    width: Dimensions.get('screen').width,
+    width: '100%',
     alignSelf: 'center',
     paddingHorizontal: 10,
   },

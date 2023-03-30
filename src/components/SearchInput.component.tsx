@@ -1,11 +1,5 @@
 import React, { Dispatch, FC } from 'react';
-import {
-  Dimensions,
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, View } from 'react-native';
 
 import { COLORS, TYPOGRAPHY } from '../theme';
 import SearchIcon from './icons/SearchIcon.component';
@@ -33,7 +27,8 @@ const SearchInput: FC<Props> = ({ onChangeText, text }) => {
 const styles = StyleSheet.create({
   inputContainer: {
     position: 'relative',
-    width: Dimensions.get('screen').width * 0.95,
+    width: '100%',
+    padding: '2.5%',
   },
   input: {
     height: 45,
@@ -42,11 +37,12 @@ const styles = StyleSheet.create({
     borderRadius: TYPOGRAPHY.BORDER_RADIUS.small,
     fontFamily: TYPOGRAPHY.FONTS.regular,
     color: COLORS.BLACK,
+    paddingTop: 5,
   },
   header: {
     flexDirection: 'row',
     marginTop: 12,
-    padding: 10,
+    padding: '1%',
     alignItems: 'center',
     justifyContent: 'center',
   },

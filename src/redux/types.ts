@@ -3,7 +3,7 @@ export type Character = {
   birth_year: string;
   eye_color: string;
   films: string[];
-  gender: string;
+  gender: GENDER;
   hair_color: string;
   height: string;
   homeworld: string;

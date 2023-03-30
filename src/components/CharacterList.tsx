@@ -1,51 +1,13 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewToken,
-} from 'react-native';
+import { FlatList, StyleSheet, View, ViewToken } from 'react-native';
 
-import Arrow from '../assets/icons/BackArrow.svg';
 import { loading, nextLink } from '../redux/characters/characters.slice';
 import { getPeople } from '../redux/characters/characters.thunk';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { Character } from '../redux/types';
-import { COLORS, TYPOGRAPHY } from '../theme';
-import Loader from './ActivityIndicator.component';
+import { ListFooterComponent } from './CharacterListFooter';
 import CharacterItem from './CharacterListItem';
 
-const ListFooterComponent: FC<{
-  toTheTopButtonVisible: boolean;
-  scrollToTop: () => void;
-  load: boolean;
-  nextPage: string;
-  searchText: string;
-}> = ({ toTheTopButtonVisible, scrollToTop, load, searchText, nextPage }) => {
-  return (
-    <>
-      {toTheTopButtonVisible && !searchText ? (
-        <TouchableOpacity style={styles.toTheTopArrow} onPress={scrollToTop}>
-          <Arrow
-            height={20}
-            width={20}
-            style={{
-              transform: [{ rotate: '90deg' }, { translateX: 2 }],
-            }}
-          />
-        </TouchableOpacity>
-      ) : null}
-      {load ? <Loader /> : null}
-
-      {!nextPage && !searchText && !load ? (
-        <Text style={styles.lastPageNotify}>No more characters</Text>
-      ) : null}
-    </>
-  );
-};
 const CharactersList: FC<{
   data: Character[];
   clearSearch: () => void;
@@ -95,7 +57,7 @@ const CharactersList: FC<{
   return (
     <View
       style={{
-        height: Dimensions.get('screen').height * 0.8,
+        height: '100%',
       }}
     >
       <FlatList
@@ -105,8 +67,6 @@ const CharactersList: FC<{
           <CharacterItem character={item} clearSearch={clearSearch} />
         )}
         onEndReached={loadMore}
-        scrollEventThrottle={250}
-        onEndReachedThreshold={0.1}
         keyExtractor={item => item.id}
         ListFooterComponent={
           <ListFooterComponent
@@ -125,19 +85,6 @@ const CharactersList: FC<{
   );
 };
 const styles = StyleSheet.create({
-  toTheTopArrow: {
-    height: 40,
-    zIndex: 100,
-    alignSelf: 'center',
-    padding: 10,
-    borderRadius: 30,
-  },
-  lastPageNotify: {
-    color: COLORS.BLACK,
-    fontFamily: TYPOGRAPHY.FONTS.semibold,
-    textAlign: 'center',
-    width: Dimensions.get('screen').width,
-  },
-  flatlist: { paddingBottom: 100 },
+  flatlist: { paddingBottom: 100, width: '100%' },
 });
 export default CharactersList;
