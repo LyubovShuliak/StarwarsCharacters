@@ -1,3 +1,5 @@
+import { Dimensions } from 'react-native';
+
 export const COLORS = {
   BLACK: 'black',
   WHITE: '#ffffff',
@@ -20,4 +22,9 @@ export const TYPOGRAPHY = {
     regular: 'Quicksand-Regular',
     semibold: 'Quicksand-SemiBold',
   },
+};
+
+export const isPortrait = () => {
+  const dim = Dimensions.get('screen');
+  return dim.height >= dim.width;
 };

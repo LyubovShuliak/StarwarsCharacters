@@ -1,4 +1,5 @@
 import { createAsyncThunk, nanoid } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { BASE_URL, FAVS_ASYNC_STORAGE_KEY } from '../../constants';
 import { Character, Fans, GENDER } from '../types';
@@ -21,15 +22,18 @@ export const getPeople = createAsyncThunk<
   string | undefined
 >('characters/get', async url => {
   try {
-    const response = await fetch(url || BASE_URL);
-    const result = (await response.json()) as {
-      next: string;
-      results: Character[];
-    };
+    const {
+      data: { next, results },
+    }: {
+      data: {
+        next: string;
+        results: Character[];
+      };
+    } = await axios.get(url || BASE_URL, { responseType: 'json' });
 
-    const people: Character[] = mapCharacters(result.results);
+    const people: Character[] = mapCharacters(results);
 
-    return { people: people, status: true, nextPage: result.next };
+    return { people: people, status: true, nextPage: next };
   } catch (error) {
     return { people: [], status: false };
   }

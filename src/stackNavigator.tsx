@@ -1,4 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
 import React, { useLayoutEffect } from 'react';
 
 import { FAVS_ASYNC_STORAGE_KEY } from './constants';
@@ -14,6 +16,10 @@ export function HomeStack() {
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
+    axiosRetry(axios, {
+      retries: 3,
+      retryDelay: retryCount => retryCount * 3000,
+    });
     dispatch(getFavoritesFromAsyncStorage(FAVS_ASYNC_STORAGE_KEY));
   }, []);
   return (

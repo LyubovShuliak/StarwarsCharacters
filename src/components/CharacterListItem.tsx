@@ -49,9 +49,7 @@ const CharacterItem: FC<{
       <View style={styles.cardContainer}>
         <View style={[styles.textContainer]}>
           <View>
-            <Text style={[styles.characterName, styles.text]}>
-              Name: {name}
-            </Text>
+            <Text style={[styles.characterName, styles.text]}>Name:{name}</Text>
             <Text style={[styles.text, styles.subtitle]}>
               Year of birth: {birth_year}
             </Text>
@@ -72,19 +70,18 @@ const CharacterItem: FC<{
 const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: COLORS.YELLOW,
-    width: '95%',
-    marginHorizontal: '2.5%',
-    marginVertical: 6,
+
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: '1%',
+    marginVertical: 6,
+    padding: 10,
+    flexGrow: 1,
   },
 
   cardContainer: {
     display: 'flex',
     flexDirection: 'row',
-    padding: 20,
   },
   characterName: {
     textTransform: 'capitalize',
@@ -94,9 +91,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
-    flexShrink: 1,
   },
-  text: { color: COLORS.WHITE, flexShrink: 1 },
+  text: { color: COLORS.WHITE },
   subtitle: { fontFamily: TYPOGRAPHY.FONTS.regular },
   button: {
     padding: 20,

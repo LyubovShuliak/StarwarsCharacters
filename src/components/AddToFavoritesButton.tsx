@@ -10,7 +10,7 @@ import {
   removeFromFavorites,
 } from '../redux/characters/characters.slice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
-import { Character, GENDER } from '../redux/types';
+import { Character } from '../redux/types';
 
 const AddToFavorites: FC<{ character: Character }> = ({ character }) => {
   const dispatch = useAppDispatch();
@@ -23,14 +23,14 @@ const AddToFavorites: FC<{ character: Character }> = ({ character }) => {
       dispatch(
         removeFromFavorites({
           uri: character.url,
-          gender: character.gender as GENDER,
+          gender: character.gender,
         })
       );
     } else {
       dispatch(
         addToFavorites({
           uri: character.url,
-          gender: character.gender as GENDER,
+          gender: character.gender,
         })
       );
     }

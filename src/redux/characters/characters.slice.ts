@@ -100,7 +100,6 @@ export const characterSlice = createSlice({
 
     builder.addCase(getFavoritesFromAsyncStorage.rejected, state => {
       state.favoritesUploadedFromStorage = true;
-      state.status = false;
     });
   },
 });
@@ -108,6 +107,7 @@ export const characterSlice = createSlice({
 export const { setLoading, addToFavorites, removeFromFavorites, clearState } =
   characterSlice.actions;
 
+export const status = (state: RootState) => state.characters.status;
 export const people = (state: RootState) => state.characters.characters;
 export const searchedPeople = (state: RootState) =>
   state.characters.searchedCharacters;

@@ -12,6 +12,10 @@ const SearchInput: FC<Props> = ({ onChangeText, text }) => {
   return (
     <SafeAreaView style={[styles.header]}>
       <View style={[styles.inputContainer]}>
+        {/*<View>*/}
+        <SearchIcon />
+        {/*</View>*/}
+
         <TextInput
           style={styles.input}
           onChangeText={onChangeText}
@@ -19,30 +23,30 @@ const SearchInput: FC<Props> = ({ onChangeText, text }) => {
           placeholder={'Search'}
           placeholderTextColor={COLORS.GREY}
         />
-        <SearchIcon />
       </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   inputContainer: {
-    position: 'relative',
+    marginHorizontal: 10,
     width: '100%',
-    padding: '2.5%',
+    backgroundColor: COLORS.LIGHT_GREY,
+    borderRadius: TYPOGRAPHY.BORDER_RADIUS.small,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   input: {
     height: 45,
-    backgroundColor: COLORS.LIGHT_GREY,
-    paddingLeft: 40,
-    borderRadius: TYPOGRAPHY.BORDER_RADIUS.small,
+    flexShrink: 1,
     fontFamily: TYPOGRAPHY.FONTS.regular,
     color: COLORS.BLACK,
-    paddingTop: 5,
+    paddingHorizontal: 5,
   },
   header: {
     flexDirection: 'row',
     marginTop: 12,
-    padding: '1%',
+    marginHorizontal: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },

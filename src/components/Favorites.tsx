@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'column',
+    flexGrow: 1,
   },
   flatlistContainer: {
     justifyContent: 'space-between',

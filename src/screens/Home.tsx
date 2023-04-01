@@ -1,10 +1,9 @@
 import { throttle } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
 
 import CharactersList from '../components/CharacterList';
-import Favorites from '../components/Favorites';
-import SearchInput from '../components/SearchInput.component';
+import Header from '../components/Header';
 import {
   loading,
   people,
@@ -58,8 +57,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.list}>
-      <Favorites />
-      <SearchInput text={searchText} onChangeText={setSearchText} />
+      <Header searchText={searchText} setSearchText={setSearchText} />
       <CharactersList
         data={charactersToDisplay}
         clearSearch={clearSearch}
@@ -71,7 +69,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   list: {
-    paddingBottom: 300,
+    height: Dimensions.get('screen').height,
   },
 });
 
