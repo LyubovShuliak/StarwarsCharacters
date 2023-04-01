@@ -1,17 +1,10 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  StyleSheet,
-  View,
-  ViewToken,
-} from 'react-native';
+import { FlatList, StyleSheet, View, ViewToken } from 'react-native';
 
 import { loading, nextLink } from '../redux/characters/characters.slice';
 import { getPeople } from '../redux/characters/characters.thunk';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { Character } from '../redux/types';
-import { isPortrait } from '../theme';
 import { ListFooterComponent } from './CharacterListFooter';
 import CharacterItem from './CharacterListItem';
 
@@ -97,10 +90,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   flatlistContainer: {
-    height:
-      (isPortrait()
-        ? Dimensions.get('screen').height
-        : Dimensions.get('screen').width) - 180,
+    flex: 1,
   },
 });
 export default CharactersList;
