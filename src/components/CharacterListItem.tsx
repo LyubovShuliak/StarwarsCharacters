@@ -70,7 +70,6 @@ const CharacterItem: FC<{
 const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: COLORS.YELLOW,
-
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

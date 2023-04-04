@@ -20,7 +20,7 @@ const initialState: InitialState = {
   status: true,
   loading: false,
   favoritesUriList: [],
-  favoritesUploadedFromStorage: false,
+  favoritesReceived: false,
 };
 
 export const characterSlice = createSlice({
@@ -92,14 +92,14 @@ export const characterSlice = createSlice({
         state.fans = action.payload.data.fans;
         state.favoritesUriList = action.payload.data.favoritesUriList;
       }
-      state.favoritesUploadedFromStorage = true;
+      state.favoritesReceived = true;
     });
     builder.addCase(getFavoritesFromAsyncStorage.pending, state => {
-      state.favoritesUploadedFromStorage = false;
+      state.favoritesReceived = false;
     });
 
     builder.addCase(getFavoritesFromAsyncStorage.rejected, state => {
-      state.favoritesUploadedFromStorage = true;
+      state.favoritesReceived = true;
     });
   },
 });
@@ -116,6 +116,6 @@ export const nextLink = (state: RootState) => state.characters.nextPage;
 export const fansByCategory = (state: RootState) => state.characters.fans;
 export const favoritesArray = (state: RootState) =>
   state.characters.favoritesUriList;
-export const favsUploaded = (state: RootState) =>
-  state.characters.favoritesUploadedFromStorage;
+export const favoritesReceivedFromStorage = (state: RootState) =>
+  state.characters.favoritesReceived;
 export const charactersReducer = characterSlice.reducer;

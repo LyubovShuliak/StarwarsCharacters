@@ -6,7 +6,7 @@ import WhiteHeart from '../assets/icons/WhiteHeart.svg';
 import {
   addToFavorites,
   favoritesArray,
-  favsUploaded,
+  favoritesReceivedFromStorage,
   removeFromFavorites,
 } from '../redux/characters/characters.slice';
 import { useAppDispatch, useAppSelector } from '../redux/store';
@@ -15,8 +15,7 @@ import { Character } from '../redux/types';
 const AddToFavorites: FC<{ character: Character }> = ({ character }) => {
   const dispatch = useAppDispatch();
   const favoritesUriList = useAppSelector(favoritesArray);
-
-  const favoritesUploaded = useAppSelector(favsUploaded);
+  const favoritesReceived = useAppSelector(favoritesReceivedFromStorage);
 
   const handleFavorite = () => {
     if (favoritesUriList.includes(character.url)) {
@@ -37,7 +36,7 @@ const AddToFavorites: FC<{ character: Character }> = ({ character }) => {
   };
   return (
     <>
-      {favoritesUploaded ? (
+      {favoritesReceived ? (
         <TouchableOpacity onPress={handleFavorite} style={styles.button}>
           {favoritesUriList.includes(character.url) ? (
             <Heart width={30} height={30} />
