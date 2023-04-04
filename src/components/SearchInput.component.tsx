@@ -12,15 +12,12 @@ const SearchInput: FC<Props> = ({ onChangeText, text }) => {
   return (
     <SafeAreaView style={[styles.header]}>
       <View style={[styles.inputContainer]}>
-        {/*<View>*/}
         <SearchIcon />
-        {/*</View>*/}
-
         <TextInput
           style={styles.input}
           onChangeText={onChangeText}
           value={text}
-          placeholder={'Search'}
+          placeholder={'Search '}
           placeholderTextColor={COLORS.GREY}
         />
       </View>
@@ -38,7 +35,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 45,
-    flexShrink: 1,
+    flex: 1,
     fontFamily: TYPOGRAPHY.FONTS.regular,
     color: COLORS.BLACK,
     paddingHorizontal: 5,

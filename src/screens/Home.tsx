@@ -1,6 +1,6 @@
 import { throttle } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 
 import CharactersList from '../components/CharacterList';
 import Header from '../components/Header';
@@ -69,7 +69,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   list: {
-    height: Dimensions.get('screen').height,
+    flex: 1,
   },
 });
 

@@ -17,6 +17,7 @@ export type Character = {
   url: string;
   vehicles: string[];
 };
+
 export enum GENDER {
   MALE = 'male',
   FEMALE = 'female',
@@ -34,8 +35,6 @@ export type InitialState = {
   searchedCharacters: Character[] | [];
   fans: Fans;
   loading: boolean;
-
   favoritesUriList: string[];
-
-  favoritesUploadedFromStorage: boolean;
+  favoritesReceived: boolean;
 };

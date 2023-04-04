@@ -1,10 +1,17 @@
 import React, { FC, useCallback, useRef, useState } from 'react';
-import { FlatList, StyleSheet, View, ViewToken } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  View,
+  ViewToken,
+} from 'react-native';
 
 import { loading, nextLink } from '../redux/characters/characters.slice';
 import { getPeople } from '../redux/characters/characters.thunk';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { Character } from '../redux/types';
+import { COLORS } from '../theme';
 import { ListFooterComponent } from './CharacterListFooter';
 import CharacterItem from './CharacterListItem';
 
@@ -51,7 +58,9 @@ const CharactersList: FC<{
   ]);
 
   const scrollToTop = () => {
-    listRef.current?.scrollToIndex({ index: 0, animated: true });
+    if (data.length > 0) {
+      listRef.current?.scrollToIndex({ index: 0, animated: true });
+    }
   };
 
   return (
@@ -68,8 +77,6 @@ const CharactersList: FC<{
           <ListFooterComponent
             toTheTopButtonVisible={toTheTopButtonVisible}
             scrollToTop={scrollToTop}
-            load={load}
-            nextPage={nextPage}
             searchText={searchText}
           />
         }
@@ -77,6 +84,11 @@ const CharactersList: FC<{
         initialNumToRender={10}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
+      {searchText && load ? (
+        <View style={styles.loaderOverlay}>
+          <ActivityIndicator size="large" color={COLORS.YELLOW} />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -84,13 +96,21 @@ const styles = StyleSheet.create({
   flatlist: {
     width: '100%',
     justifyContent: 'center',
-    // alignItems: 'center',
-    // alignContent: 'center',
     alignSelf: 'center',
     padding: 10,
   },
   flatlistContainer: {
     flex: 1,
+  },
+  loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 10,
+    right: 10,
+    backgroundColor: COLORS.OVERLAY_GREY,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });
 export default CharactersList;

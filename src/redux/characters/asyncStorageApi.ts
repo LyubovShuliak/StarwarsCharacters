@@ -11,7 +11,7 @@ export const storeData: (props: {
     const strigified = JSON.stringify(props);
     AsyncStorage.setItem(key, strigified);
   } catch (e) {
-    // saving error
+    console.log(e);
   }
 };
 

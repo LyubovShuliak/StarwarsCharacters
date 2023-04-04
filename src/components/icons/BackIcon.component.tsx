@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
-
     padding: 20,
   },
   text: {

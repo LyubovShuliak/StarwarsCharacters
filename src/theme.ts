@@ -1,15 +1,13 @@
-import { Dimensions } from 'react-native';
-
 export const COLORS = {
   BLACK: 'black',
   WHITE: '#ffffff',
   GREY: '#36404F',
   LIGHT_GREY: '#D9D9D9',
-  BLUE_GREY: '#343D54',
   BLOCK_GREY: '#252934',
   RED: 'rgb(136, 8, 8)',
   YELLOW: '#d0a54b',
   TRANSPARENT: 'transparent',
+  OVERLAY_GREY: 'rgba(37,41,52,0.24)',
 };
 
 export const TYPOGRAPHY = {
@@ -22,9 +20,4 @@ export const TYPOGRAPHY = {
     regular: 'Quicksand-Regular',
     semibold: 'Quicksand-SemiBold',
   },
-};
-
-export const isPortrait = () => {
-  const dim = Dimensions.get('screen');
-  return dim.height >= dim.width;
 };
