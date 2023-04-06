@@ -18,7 +18,12 @@ const mapCharacters = (data: Character[]) => {
   }));
 };
 export const getPeople = createAsyncThunk<
-  { people: Character[]; status: boolean; nextPage?: string },
+  {
+    people: Character[];
+    status: boolean;
+    nextPage?: string;
+    errorMessage?: string;
+  },
   string | undefined
 >('characters/get', async url => {
   try {
@@ -29,32 +34,56 @@ export const getPeople = createAsyncThunk<
         next: string;
         results: Character[];
       };
-    } = await axios.get(url || BASE_URL, { responseType: 'json' });
+    } = await axios.get(url || BASE_URL, {
+      responseType: 'json',
+    });
 
     const people: Character[] = mapCharacters(results);
 
     return { people: people, status: true, nextPage: next };
   } catch (error) {
-    return { people: [], status: false };
+    if (error instanceof Error) {
+      return {
+        people: [],
+        status: false,
+        errorMessage: error?.message || '',
+      };
+    }
+    return {
+      people: [],
+      status: false,
+    };
   }
 });
-export const searchPeople = createAsyncThunk<{ people: Character[] }, string>(
-  'characters/search',
-  async value => {
-    try {
-      const response = await fetch(`${BASE_URL}?search=${value}`);
-      const result = (await response.json()) as {
-        next: string;
-        results: Character[];
-      };
-      const people: Character[] = mapCharacters(result.results);
+export const searchPeople = createAsyncThunk<
+  { people: Character[]; errorMessage?: string },
+  string
+>('characters/search', async value => {
+  try {
+    const response = await axios.get(`${BASE_URL}?search=${value}`, {
+      responseType: 'json',
+    });
+    const result = (await response.data) as {
+      next: string;
+      results: Character[];
+    };
+    const people: Character[] = mapCharacters(result.results);
 
-      return { people: people };
-    } catch (error) {
-      return { people: [] };
+    return { people: people };
+  } catch (error) {
+    if (error instanceof Error) {
+      return {
+        people: [],
+        status: false,
+        errorMessage: error?.message || '',
+      };
     }
+    return {
+      people: [],
+      status: false,
+    };
   }
-);
+});
 
 export const saveFavoritesToAsyncStorage = createAsyncThunk<
   { status: boolean },
@@ -72,7 +101,7 @@ export const saveFavoritesToAsyncStorage = createAsyncThunk<
 export const getFavoritesFromAsyncStorage = createAsyncThunk<
   { status: boolean; data?: AsyncStorageData },
   string
->('favorites/save', async key => {
+>('favorites/get', async key => {
   try {
     const data: AsyncStorageData | null = await getAsyncStorageData(key);
     if (!data) {

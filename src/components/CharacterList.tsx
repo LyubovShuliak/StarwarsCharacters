@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   FlatList,
   StyleSheet,
+  Text,
   View,
   ViewToken,
 } from 'react-native';
@@ -11,19 +12,18 @@ import { loading, nextLink } from '../redux/characters/characters.slice';
 import { getPeople } from '../redux/characters/characters.thunk';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { Character } from '../redux/types';
-import { COLORS } from '../theme';
+import { COLORS, TYPOGRAPHY } from '../theme';
 import { ListFooterComponent } from './CharacterListFooter';
 import CharacterItem from './CharacterListItem';
 
 const CharactersList: FC<{
   data: Character[];
-  clearSearch: () => void;
   searchText: string;
-}> = ({ data, clearSearch, searchText }) => {
+}> = ({ data, searchText }) => {
   const dispatch = useAppDispatch();
 
   const nextPage = useAppSelector(nextLink);
-  const load = useAppSelector(loading);
+  const isLoading = useAppSelector(loading);
 
   const listRef = useRef<FlatList<Character>>(null);
 
@@ -65,12 +65,13 @@ const CharactersList: FC<{
 
   return (
     <View style={styles.flatlistContainer}>
+      {searchText && !isLoading && !data.length ? (
+        <Text style={styles.nothingFound}>No characters found</Text>
+      ) : null}
       <FlatList
         ref={listRef}
         data={data}
-        renderItem={({ item }) => (
-          <CharacterItem character={item} clearSearch={clearSearch} />
-        )}
+        renderItem={({ item }) => <CharacterItem character={item} />}
         onEndReached={loadMore}
         keyExtractor={item => item.id}
         ListFooterComponent={
@@ -84,7 +85,7 @@ const CharactersList: FC<{
         initialNumToRender={10}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
       />
-      {searchText && load ? (
+      {searchText && isLoading ? (
         <View style={styles.loaderOverlay}>
           <ActivityIndicator size="large" color={COLORS.YELLOW} />
         </View>
@@ -111,6 +112,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.OVERLAY_GREY,
     flexDirection: 'column',
     justifyContent: 'center',
+  },
+  nothingFound: {
+    color: COLORS.BLACK,
+    fontFamily: TYPOGRAPHY.FONTS.semibold,
+    textAlign: 'center',
+    width: '100%',
   },
 });
 export default CharactersList;

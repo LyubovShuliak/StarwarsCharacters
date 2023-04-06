@@ -21,6 +21,7 @@ const initialState: InitialState = {
   loading: false,
   favoritesUriList: [],
   favoritesReceived: false,
+  error: '',
 };
 
 export const characterSlice = createSlice({
@@ -64,6 +65,7 @@ export const characterSlice = createSlice({
       state.status = action.payload.status;
       state.loading = false;
       state.nextPage = action.payload.nextPage || '';
+      state.error = action.payload.errorMessage || '';
     });
 
     builder.addCase(getPeople.pending, state => {
@@ -77,6 +79,7 @@ export const characterSlice = createSlice({
     builder.addCase(searchPeople.fulfilled, (state, action) => {
       state.searchedCharacters = action.payload.people;
       state.loading = false;
+      state.error = action.payload?.errorMessage || '';
     });
 
     builder.addCase(searchPeople.pending, state => {
@@ -86,6 +89,7 @@ export const characterSlice = createSlice({
     builder.addCase(searchPeople.rejected, state => {
       state.loading = false;
       state.status = false;
+      state.error = 'Reopen app';
     });
     builder.addCase(getFavoritesFromAsyncStorage.fulfilled, (state, action) => {
       if (action.payload.data) {
@@ -118,4 +122,6 @@ export const favoritesArray = (state: RootState) =>
   state.characters.favoritesUriList;
 export const favoritesReceivedFromStorage = (state: RootState) =>
   state.characters.favoritesReceived;
+export const errorMessage = (state: RootState) => state.characters.error;
+
 export const charactersReducer = characterSlice.reducer;

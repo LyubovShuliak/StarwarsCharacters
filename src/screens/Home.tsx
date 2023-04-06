@@ -1,18 +1,18 @@
-import { throttle } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
 import CharactersList from '../components/CharacterList';
 import Header from '../components/Header';
 import {
+  errorMessage,
   loading,
   people,
   searchedPeople,
-  setLoading,
 } from '../redux/characters/characters.slice';
-import { getPeople, searchPeople } from '../redux/characters/characters.thunk';
+import { getPeople } from '../redux/characters/characters.thunk';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { Character } from '../redux/types';
+import { COLORS } from '../theme';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -20,27 +20,17 @@ const Home = () => {
   const charactersList = useAppSelector(people);
   const charactersSearchedList = useAppSelector(searchedPeople);
   const isLoading = useAppSelector(loading);
-
+  const error = useAppSelector(errorMessage);
   const [charactersToDisplay, setCharactersToDisplay] = useState<Character[]>(
     []
   );
   const [searchText, setSearchText] = useState('');
-  const filterCharacters = throttle(() => {
-    dispatch(searchPeople(searchText));
-  }, 500);
 
   useEffect(() => {
     if (!charactersList.length) {
       dispatch(getPeople());
     }
   }, [charactersList]);
-
-  useEffect(() => {
-    if (searchText.length > 0) {
-      dispatch(setLoading());
-      filterCharacters();
-    }
-  }, [searchText]);
 
   useEffect(() => {
     if (isLoading) {
@@ -53,16 +43,12 @@ const Home = () => {
     }
   }, [charactersSearchedList, charactersList, isLoading]);
 
-  const clearSearch = () => setSearchText('');
-
   return (
     <SafeAreaView style={styles.list}>
       <Header searchText={searchText} setSearchText={setSearchText} />
-      <CharactersList
-        data={charactersToDisplay}
-        clearSearch={clearSearch}
-        searchText={searchText}
-      />
+      {error ? <Text style={styles.errorMessage}>{error} </Text> : null}
+
+      <CharactersList data={charactersToDisplay} searchText={searchText} />
     </SafeAreaView>
   );
 };
@@ -70,6 +56,11 @@ const Home = () => {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
+  },
+  errorMessage: {
+    fontSize: 15,
+    color: COLORS.RED,
+    textAlign: 'center',
   },
 });
 

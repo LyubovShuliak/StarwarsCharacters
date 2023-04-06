@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   characterCategory: {
     fontSize: 15,
-
+    color: COLORS.BLACK,
     textTransform: 'uppercase',
     borderColor: COLORS.BLOCK_GREY,
     fontFamily: TYPOGRAPHY.FONTS.light,

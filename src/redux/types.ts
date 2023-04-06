@@ -37,4 +37,5 @@ export type InitialState = {
   loading: boolean;
   favoritesUriList: string[];
   favoritesReceived: boolean;
+  error: string;
 };

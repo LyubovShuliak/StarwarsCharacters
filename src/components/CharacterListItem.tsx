@@ -16,14 +16,12 @@ import { COLORS, TYPOGRAPHY } from '../theme';
 import { RootStackParamList } from '../types';
 const CharacterItem: FC<{
   character: Character;
-  clearSearch: () => void;
-}> = ({ character, clearSearch }) => {
+}> = ({ character }) => {
   const favoritesLinks = useAppSelector(favoritesArray);
   const dispatch = useAppDispatch();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const { name, birth_year, gender } = character;
   const handlePressItem = () => {
-    clearSearch();
     navigation.navigate('Character', { data: character });
   };
 
@@ -49,7 +47,9 @@ const CharacterItem: FC<{
       <View style={styles.cardContainer}>
         <View style={[styles.textContainer]}>
           <View>
-            <Text style={[styles.characterName, styles.text]}>Name:{name}</Text>
+            <Text style={[styles.characterName, styles.text]}>
+              Name: {name}
+            </Text>
             <Text style={[styles.text, styles.subtitle]}>
               Year of birth: {birth_year}
             </Text>
