@@ -1,0 +1,168 @@
+Subject: [PATCH] added build workflow
+---
+Index: .github/workflows/android_build.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.github/workflows/android_build.yml b/.github/workflows/android_build.yml
+new file mode 100644
+--- /dev/null	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
++++ b/.github/workflows/android_build.yml	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
+@@ -0,0 +1,41 @@
++name: Android Build
++
++on:
++  push:
++    branches:
++      - master
++
++jobs:
++  signed:
++    name: build signed APK DEBUG
++    runs-on: ubuntu-latest
++    if: github.ref_name == 'master'
++    steps:
++      - uses: actions/checkout@v1
++
++      - name: Set Up JDK
++        uses: actions/setup-java@v1
++        with:
++          java-version: 11
++
++      - run: sudo apt-get -y update
++        shell: bash
++
++      - run: sudo apt-get -y install openjdk-11-jdk
++        shell: bash
++
++      - run: yarn
++        shell: bash
++
++      - name: build release
++        working-directory: ./android
++        run: ./gradlew assembleRelease
++
++      - name: upload artifact to Firebase App Distribution
++        uses: wzieba/Firebase-Distribution-Github-Action@v1
++        with:
++          appId: ${{ secrets.FIREBASE_APP_ID_PROD }}
++          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
++          groups: testers
++          file: android/app/build/outputs/apk/release/app-release.apk
++
+Index: android/app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/android/app/build.gradle b/android/app/build.gradle
+--- a/android/app/build.gradle	(revision fa8c2653d15f32bb3c6e029294a7d67cc5fc6d3b)
++++ b/android/app/build.gradle	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
+@@ -1,5 +1,6 @@
+ apply plugin: "com.android.application"
+ apply plugin: "com.facebook.react"
++apply plugin: "com.google.gms.google-services"
+ 
+ import com.android.build.OutputFile
+ 
+@@ -152,6 +153,9 @@
+     // The version of react-native is set by the React Native Gradle Plugin
+     implementation("com.facebook.react:react-android")
+ 
++    implementation platform('com.google.firebase:firebase-bom:31.5.0')
++    implementation 'com.google.firebase:firebase-analytics'
++    
+     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
+ 
+     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
+Index: android/app/google-services.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/android/app/google-services.json b/android/app/google-services.json
+new file mode 100644
+--- /dev/null	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
++++ b/android/app/google-services.json	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
+@@ -0,0 +1,39 @@
++{
++  "project_info": {
++    "project_number": "332169779854",
++    "project_id": "stars-7c18e",
++    "storage_bucket": "stars-7c18e.appspot.com"
++  },
++  "client": [
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:332169779854:android:30c35f43fc7957194247df",
++        "android_client_info": {
++          "package_name": "com.starwarscharacters"
++        }
++      },
++      "oauth_client": [
++        {
++          "client_id": "332169779854-5651lqd01tp0lsatr1ul8dome30dmj5l.apps.googleusercontent.com",
++          "client_type": 3
++        }
++      ],
++      "api_key": [
++        {
++          "current_key": "AIzaSyD_sKFiVvBd-dXnveveXKItu5bETuJkVWs"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": [
++            {
++              "client_id": "332169779854-5651lqd01tp0lsatr1ul8dome30dmj5l.apps.googleusercontent.com",
++              "client_type": 3
++            }
++          ]
++        }
++      }
++    }
++  ],
++  "configuration_version": "1"
++}
+\ No newline at end of file
+Index: android/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/android/build.gradle b/android/build.gradle
+--- a/android/build.gradle	(revision fa8c2653d15f32bb3c6e029294a7d67cc5fc6d3b)
++++ b/android/build.gradle	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
+@@ -17,5 +17,13 @@
+     dependencies {
+         classpath("com.android.tools.build:gradle:7.3.1")
+         classpath("com.facebook.react:react-native-gradle-plugin")
++        classpath('com.google.gms:google-services:4.3.15')
++    }
++    allprojects {
++        repositories {
++            google()
++            mavenCentral()
++
++        }
+     }
+ }
+Index: tsconfig.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/tsconfig.json b/tsconfig.json
+--- a/tsconfig.json	(revision fa8c2653d15f32bb3c6e029294a7d67cc5fc6d3b)
++++ b/tsconfig.json	(revision c3596b60f1a8fe4648e3c93cf7f59903d06388db)
+@@ -13,9 +13,6 @@
+   ],
+   "compilerOptions": {
+     "jsx": "react",
+-    /* Visit https://aka.ms/tsconfig.json to read more about this file */
+-
+-    /* Completeness */
+     "skipLibCheck": true,
+     "module": "commonjs" ,
+     "baseUrl": ".",
