@@ -1,0 +1,41 @@
+name: Android Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  signed:
+    name: build signed APK DEBUG
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'master'
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - run: sudo apt-get -y update
+        shell: bash
+
+      - run: sudo apt-get -y install openjdk-11-jdk
+        shell: bash
+
+      - run: yarn
+        shell: bash
+
+      - name: build release
+        working-directory: ./android
+        run: ./gradlew assembleRelease
+
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID_PROD }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: testers
+          file: android/app/build/outputs/apk/release/app-release.apk
+
